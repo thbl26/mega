@@ -1,92 +1,295 @@
-
 <!DOCTYPE html>
 <html lang="de">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Mega Länder League 2026/27</title>
+
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#f3f4f8;color:#172139;font-family:Arial,sans-serif;text-align:center}
-header{background:linear-gradient(120deg,#071b33,#24204e);color:white;padding:25px 10px;border-bottom:5px solid #00c2a8}
-h1{font-size:clamp(23px,5vw,36px);margin:10px}
+
+body{
+ margin:0;
+ background:#f3f4f8;
+ color:#172139;
+ font-family:Arial,sans-serif;
+ text-align:center;
+}
+
+header{
+ background:linear-gradient(120deg,#071b33,#24204e);
+ color:white;
+ padding:25px 10px;
+ border-bottom:5px solid #00c2a8;
+}
+
+h1{
+ font-size:clamp(23px,5vw,36px);
+ margin:10px;
+}
+
 header p{color:#d6e8f5}
-main{max-width:1000px;margin:auto;padding:14px}
-.panel{background:white;border-radius:14px;padding:18px 10px;margin:16px 0;box-shadow:0 3px 14px #152b4520}
-button{background:#0b2345;color:white;border:0;border-radius:8px;padding:11px;cursor:pointer;font-weight:bold}
-button:hover{background:#234c7e}
+
+main{
+ max-width:1000px;
+ margin:auto;
+ padding:14px;
+}
+
+.panel{
+ background:white;
+ border-radius:14px;
+ padding:18px 10px;
+ margin:16px 0;
+ box-shadow:0 3px 14px #152b4520;
+}
+
+button{
+ background:#0b2345;
+ color:white;
+ border:0;
+ border-radius:8px;
+ padding:11px;
+ cursor:pointer;
+ font-weight:bold;
+}
+
 button.danger{background:#c83249}
-select,input{padding:9px;border:1px solid #ccd3df;border-radius:7px;background:white;color:#172139}
-.controls{display:flex;gap:10px;justify-content:center;align-items:center;flex-wrap:wrap}
-.match{display:flex;align-items:center;justify-content:center;gap:9px;flex-wrap:wrap;background:#f8faff;border:1px solid #e4e8f0;border-radius:12px;margin:12px 0;padding:16px 8px}
-.team-picker{display:flex;align-items:center;gap:8px}
-.team-picker select{width:165px;font-size:15px;min-height:48px}
-.flag{font-size:46px;line-height:1;min-width:52px;display:inline-flex;align-items:center;justify-content:center}
-.match input{width:57px;text-align:center;font-size:19px;font-weight:bold}
+
+select,input{
+ padding:9px;
+ border:1px solid #ccd3df;
+ border-radius:7px;
+ background:white;
+ color:#172139;
+}
+
+.controls{
+ display:flex;
+ gap:10px;
+ justify-content:center;
+ align-items:center;
+ flex-wrap:wrap;
+}
+
+.match{
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ gap:9px;
+ flex-wrap:wrap;
+ background:#f8faff;
+ border:1px solid #e4e8f0;
+ border-radius:12px;
+ margin:12px 0;
+ padding:16px 8px;
+}
+
+.team-picker{
+ display:flex;
+ align-items:center;
+ gap:8px;
+}
+
+.team-picker select{
+ width:165px;
+ font-size:15px;
+ min-height:48px;
+}
+
+/* Große Flaggen wie bei Mega */
+.flag{
+ font-size:46px;
+ line-height:1;
+ min-width:52px;
+ display:inline-flex;
+ align-items:center;
+ justify-content:center;
+}
+
+/* Englandflagge als echte SVG-Grafik */
+.england-flag{
+ width:52px;
+ height:35px;
+ display:inline-block;
+ vertical-align:middle;
+ border:1px solid #ddd;
+ border-radius:2px;
+}
+
+.match input{
+ width:57px;
+ text-align:center;
+ font-size:19px;
+ font-weight:bold;
+}
+
 .table-wrap{overflow-x:auto}
-table{width:100%;border-collapse:collapse;font-size:14px}
-th{background:#0b2345;color:white;padding:11px 6px}
-td{padding:10px 6px;border-bottom:1px solid #e7ebf0}
-td:nth-child(2){text-align:left;white-space:nowrap;font-weight:bold}
-.table-team{display:flex;align-items:center;gap:10px}
-.table-flag{font-size:32px;line-height:1}
+
+table{
+ width:100%;
+ border-collapse:collapse;
+ font-size:14px;
+}
+
+th{
+ background:#0b2345;
+ color:white;
+ padding:11px 6px;
+}
+
+td{
+ padding:10px 6px;
+ border-bottom:1px solid #e7ebf0;
+}
+
+td:nth-child(2){
+ text-align:left;
+ white-space:nowrap;
+ font-weight:bold;
+}
+
+.table-team{
+ display:flex;
+ align-items:center;
+ gap:10px;
+}
+
+.table-flag{
+ font-size:32px;
+ line-height:1;
+ min-width:38px;
+ display:inline-flex;
+ align-items:center;
+ justify-content:center;
+}
+
+.table-flag .england-flag{
+ width:38px;
+ height:26px;
+}
+
 tbody tr:first-child{background:#d9f7f3}
-tbody tr:nth-child(n+2):nth-child(-n+4){background:#eaf6ff}
-.note{color:#66758b;font-size:13px}
+
+tbody tr:nth-child(n+2):nth-child(-n+4){
+ background:#eaf6ff;
+}
+
+.note{
+ color:#66758b;
+ font-size:13px;
+}
+
 @media(max-width:650px){
-.match{gap:6px;padding:12px 4px}
-.team-picker{gap:3px}
-.team-picker select{width:115px;font-size:12px}
-.flag{font-size:38px;min-width:40px}
-.match input{width:43px;font-size:16px}
-table{font-size:11px}
-td,th{padding:8px 4px}
-.table-flag{font-size:27px}
+ .match{
+  gap:6px;
+  padding:12px 4px;
+ }
+
+ .team-picker{gap:3px}
+
+ .team-picker select{
+  width:115px;
+  font-size:12px;
+ }
+
+ .flag{
+  font-size:38px;
+  min-width:40px;
+ }
+
+ .england-flag{
+  width:40px;
+  height:27px;
+ }
+
+ .match input{
+  width:43px;
+  font-size:16px;
+ }
+
+ table{font-size:11px}
+
+ td,th{padding:8px 4px}
+
+ .table-flag{font-size:27px}
+
+ .table-flag .england-flag{
+  width:32px;
+  height:22px;
+ }
 }
 </style>
 </head>
+
 <body>
+
 <header>
 <div style="font-size:52px">🏆</div>
 <h1>MEGA LÄNDER LEAGUE</h1>
 <p>Manager 2026/27</p>
 <p>31 Nationalmannschaften · Eigene Spiele · Automatische Tabelle</p>
 </header>
+
 <main>
+
 <section class="panel">
 <h2>⚽ Spieltag</h2>
+
 <div class="controls">
 <select id="day" aria-label="Spieltag"></select>
 <button id="add">➕ Spiel hinzufügen</button>
 </div>
-<p class="note">Du bestimmst selbst, welche Länder gegeneinander spielen.</p>
+
+<p class="note">
+Du bestimmst selbst, welche Länder gegeneinander spielen.
+</p>
+
 <div id="matches"></div>
 </section>
+
 <section class="panel">
 <h2>📊 Tabelle</h2>
+
 <div class="table-wrap">
 <table>
 <thead>
 <tr>
-<th>Pl.</th><th>Land</th><th>Sp.</th><th>S</th><th>U</th><th>N</th><th>Tore</th><th>Diff.</th><th>Pkt.</th>
+<th>Pl.</th>
+<th>Land</th>
+<th>Sp.</th>
+<th>S</th>
+<th>U</th>
+<th>N</th>
+<th>Tore</th>
+<th>Diff.</th>
+<th>Pkt.</th>
 </tr>
 </thead>
 <tbody id="table"></tbody>
 </table>
 </div>
 </section>
+
 <section class="panel">
 <h2>💾 Datensicherung</h2>
+
 <div class="controls">
 <button id="export">Exportieren</button>
-<label>Importieren <input id="import" type="file" accept=".json,application/json"></label>
+<label>
+Importieren
+<input id="import" type="file" accept=".json">
+</label>
 <button id="reset" class="danger">Alle Spiele löschen</button>
 </div>
 </section>
+
 </main>
+
 <footer style="padding:25px;color:#66758b">
 Mega Länder League 2026/27 · Offline nutzbar
 </footer>
+
 <script>
 "use strict";
 
@@ -94,7 +297,7 @@ const countries=[
 ["Belgien","🇧🇪"],
 ["Spanien","🇪🇸"],
 ["Türkei","🇹🇷"],
-["England","🏴"],
+["England","ENG"],
 ["Italien","🇮🇹"],
 ["Deutschland","🇩🇪"],
 ["Portugal","🇵🇹"],
@@ -146,6 +349,7 @@ for(let i=1;i<=60;i++){
 }
 
 const savedDay=localStorage.getItem(DAYKEY);
+
 if(savedDay&&Number(savedDay)>=1&&Number(savedDay)<=60){
  day.value=savedDay;
 }
@@ -154,18 +358,40 @@ function saveData(){
  localStorage.setItem(KEY,JSON.stringify(games));
 }
 
-function flag(i){
- return countries[i]?.[1]||"🏳️";
-}
-
 function name(i){
  return countries[i]?.[0]||"Unbekannt";
 }
 
+/*
+ Englandflagge:
+ Weißer Hintergrund mit rotem Georgskreuz.
+ SVG funktioniert auch offline.
+*/
+function englandFlag(){
+ return `
+ <svg class="england-flag"
+      viewBox="0 0 60 40"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-label="Flagge von England"
+      role="img">
+  <rect width="60" height="40" fill="#ffffff"/>
+  <rect x="0" y="16" width="60" height="8" fill="#CE1124"/>
+  <rect x="26" y="0" width="8" height="40" fill="#CE1124"/>
+ </svg>`;
+}
+
+function flagHTML(i){
+ if(name(i)==="England"){
+  return englandFlag();
+ }
+ return countries[i]?.[1]||"🏳️";
+}
+
 function options(selected){
- return countries.map((c,i)=>
-  `<option value="${i}" ${i===selected?"selected":""}>${c[1]} ${c[0]}</option>`
- ).join("");
+ return countries.map((c,i)=>{
+  const label=c[0]==="England"?"England":c[1]+" "+c[0];
+  return `<option value="${i}" ${i===selected?"selected":""}>${label}</option>`;
+ }).join("");
 }
 
 function validScore(x){
@@ -173,7 +399,9 @@ function validScore(x){
 }
 
 function renderMatches(){
- const list=Array.isArray(games[day.value])?games[day.value]:[];
+ const list=Array.isArray(games[day.value])
+  ?games[day.value]:[];
+
  const box=document.getElementById("matches");
  box.innerHTML="";
 
@@ -188,15 +416,26 @@ function renderMatches(){
   el.innerHTML=`
    <div class="team-picker">
     <span class="flag home-flag"></span>
-    <select class="home" aria-label="Heimteam">${options(g.h)}</select>
+    <select class="home" aria-label="Heimteam">
+     ${options(g.h)}
+    </select>
    </div>
-   <input class="a" type="number" min="0" max="99" placeholder="–" aria-label="Heimtore">
+
+   <input class="a" type="number" min="0" max="99"
+          placeholder="–" aria-label="Heimtore">
+
    <b>:</b>
-   <input class="b" type="number" min="0" max="99" placeholder="–" aria-label="Gästetore">
+
+   <input class="b" type="number" min="0" max="99"
+          placeholder="–" aria-label="Gästetore">
+
    <div class="team-picker">
-    <select class="away" aria-label="Gastteam">${options(g.v)}</select>
+    <select class="away" aria-label="Gastteam">
+     ${options(g.v)}
+    </select>
     <span class="flag away-flag"></span>
    </div>
+
    <button class="danger" title="Spiel löschen">✕</button>
   `;
 
@@ -209,8 +448,8 @@ function renderMatches(){
   b.value=g.b??"";
 
   function refreshFlags(){
-   el.querySelector(".home-flag").textContent=flag(+home.value);
-   el.querySelector(".away-flag").textContent=flag(+away.value);
+   el.querySelector(".home-flag").innerHTML=flagHTML(+home.value);
+   el.querySelector(".away-flag").innerHTML=flagHTML(+away.value);
   }
 
   refreshFlags();
@@ -228,14 +467,17 @@ function renderMatches(){
      return;
     }
 
-    if([av,bv].some(x=>x!==""&&(!/^\d+$/.test(x)||+x>99))){
+    if([av,bv].some(x=>
+      x!==""&&(!/^\d+$/.test(x)||+x>99)
+    )){
      alert("Tore müssen zwischen 0 und 99 liegen.");
      renderMatches();
      return;
     }
 
     Object.assign(g,{
-     h,v,
+     h,
+     v,
      a:av===""?null:+av,
      b:bv===""?null:+bv
     });
@@ -258,7 +500,14 @@ function renderMatches(){
 
 function renderTable(){
  const rows=countries.map((c,i)=>({
-  i,sp:0,s:0,u:0,n:0,tf:0,ta:0,p:0
+  i,
+  sp:0,
+  s:0,
+  u:0,
+  n:0,
+  tf:0,
+  ta:0,
+  p:0
  }));
 
  Object.values(games).forEach(list=>{
@@ -269,13 +518,16 @@ function renderTable(){
    const y=rows[g.v];
 
    if(!x||!y||x===y||
-      !validScore(g.a)||!validScore(g.b))return;
+      !validScore(g.a)||!validScore(g.b)){
+    return;
+   }
 
    x.sp++;
    y.sp++;
 
    x.tf+=g.a;
    x.ta+=g.b;
+
    y.tf+=g.b;
    y.ta+=g.a;
 
@@ -303,12 +555,21 @@ function renderTable(){
   name(a.i).localeCompare(name(b.i),"de")
  );
 
- document.getElementById("table").innerHTML=rows.map((r,i)=>{
+ document.getElementById("table").innerHTML=
+ rows.map((r,i)=>{
   const diff=r.tf-r.ta;
 
-  return `<tr>
+  return `
+  <tr>
    <td>${i+1}</td>
-   <td><div class="table-team"><span class="table-flag">${flag(r.i)}</span><span>${name(r.i)}</span></div></td>
+
+   <td>
+    <div class="table-team">
+     <span class="table-flag">${flagHTML(r.i)}</span>
+     <span>${name(r.i)}</span>
+    </div>
+   </td>
+
    <td>${r.sp}</td>
    <td>${r.s}</td>
    <td>${r.u}</td>
@@ -332,15 +593,21 @@ day.onchange=()=>{
 
 document.getElementById("add").onclick=()=>{
  const d=day.value;
- if(!Array.isArray(games[d]))games[d]=[];
+
+ if(!Array.isArray(games[d])){
+  games[d]=[];
+ }
 
  const used=new Set();
+
  games[d].forEach(g=>{
   used.add(g.h);
   used.add(g.v);
  });
 
- const free=countries.map((_,i)=>i).filter(i=>!used.has(i));
+ const free=countries
+  .map((_,i)=>i)
+  .filter(i=>!used.has(i));
 
  games[d].push({
   h:free[0]??0,
@@ -366,11 +633,14 @@ document.getElementById("export").onclick=()=>{
   [JSON.stringify(games,null,2)],
   {type:"application/json"}
  );
+
  const url=URL.createObjectURL(blob);
  const a=document.createElement("a");
+
  a.href=url;
  a.download="mega-laender-league-backup.json";
  a.click();
+
  setTimeout(()=>URL.revokeObjectURL(url),1000);
 };
 
@@ -380,7 +650,10 @@ document.getElementById("import").onchange=async e=>{
 
  try{
   const data=JSON.parse(await file.text());
-  if(!data||typeof data!=="object"||Array.isArray(data)){
+
+  if(!data||
+     typeof data!=="object"||
+     Array.isArray(data)){
    throw Error("Ungültige Datei");
   }
 
@@ -390,6 +663,7 @@ document.getElementById("import").onchange=async e=>{
    render();
    alert("Import erfolgreich!");
   }
+
  }catch(err){
   alert("Ungültige Sicherungsdatei.");
  }
