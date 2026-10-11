@@ -1,360 +1,185 @@
+
 <!DOCTYPE html>
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Mega Länder League Manager 2026/27</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mega Länder League 2026/27</title>
 <style>
-* { box-sizing: border-box; }
-:root {
-  --pl-navy:#071b33;
-  --pl-purple:#0b2345;
-  --pl-pink:#ff4b44;
-  --pl-green:#00c2a8;
-  --pl-cyan:#21d4fd;
-}
-body {
-  font-family: Arial, Helvetica, sans-serif;
-  background: #f3f4f8;
-  text-align: center;
-  margin: 0;
-  color: #19131f;
-}
-h1 {
-  background: linear-gradient(135deg, var(--pl-purple), #240044 62%, #11001d);
-  color: white;
-  padding: 16px 12px;
-  margin: 0;
-  font-size: clamp(24px, 5vw, 34px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 14px;
-  flex-wrap: wrap;
-  border-bottom: 4px solid var(--pl-green);
-}
-.league-logo {
-  width: 72px;
-  height: 72px;
-  object-fit: contain;
-  background: white;
-  border-radius: 14px;
-  padding: 7px;
-}
-.subtitle { margin: 12px 0 18px; color:#5f5967; }
-.controls {
-  display:flex; justify-content:center; align-items:center;
-  gap:10px; flex-wrap:wrap; margin-bottom:10px;
-}
-.controls label { font-weight:bold; }
-select,input { border:1px solid #d0cad7; border-radius:7px; background:white; }
-#matchday { padding:9px 12px; font-size:15px; }
-.match {
-  background:white; margin:12px auto; padding:18px;
-  width:min(780px, calc(100% - 28px)); border-radius:14px;
-  display:flex; align-items:center; justify-content:center;
-  gap:10px; min-height:82px; flex-wrap:wrap;
-  box-shadow:0 3px 14px rgba(55,0,60,.10);
-  border-top:3px solid rgba(55,0,60,.08);
-}
-.match select,.match input { padding:9px; font-size:14px; }
-.match select { min-width:165px; }
-.match input { width:58px; text-align:center; font-size:18px; font-weight:bold; }
-.match img { width:46px; height:46px; object-fit:contain; flex-shrink:0; }
-.score-separator { font-size:20px; font-weight:bold; }
-button {
-  padding:8px 13px; border:none; background:var(--pl-purple); color:white;
-  border-radius:7px; cursor:pointer; font-size:14px;
-}
-button:hover { background:#26002a; }
-button.delete { background:#d8324a; }
-button.delete:hover { background:#b5263b; }
-.add-button { margin:5px 0 14px; font-size:15px; }
-h2 { margin-top:25px; }
-.table-wrapper { overflow-x:auto; padding:0 10px 30px; }
-table {
-  margin:12px auto; border-collapse:collapse; width:min(820px,100%);
-  background:white; box-shadow:0 3px 14px rgba(55,0,60,.10);
-  border-radius:12px; overflow:hidden;
-}
-th,td { padding:9px 8px; border-bottom:1px solid #ece8ef; }
-th { background:var(--pl-purple); color:white; }
-td:first-child,th:first-child { width:46px; text-align:center; }
-td.team-cell { text-align:left; min-width:210px; font-weight:600; }
-td img { width:28px; height:28px; object-fit:contain; vertical-align:middle; margin-right:7px; }
-tbody tr:nth-child(-n+4) { background:#e8fbff; }
-tbody tr:nth-child(5) { background:#eefbe9; }
-tbody tr:nth-last-child(-n+3) { background:#fde9ec; }
-.legend {
-  width:min(820px, calc(100% - 30px)); margin:0 auto 10px;
-  font-size:13px; color:#5f5967; text-align:left;
-}
-.empty { margin:25px auto; color:#6e6775; }
-.logo-fallback {
-  display:inline-flex; align-items:center; justify-content:center;
-  background:linear-gradient(135deg,#eee8f3,#fff); color:var(--pl-purple);
-  border:1px solid #d7cfdd; border-radius:50%; font-weight:800;
-}
-@media (max-width:650px) {
-  .match { gap:7px; padding:14px 8px; }
-  .match select { min-width:125px; max-width:155px; }
-  .match img { width:38px; height:38px; }
-  th,td { padding:8px 5px; font-size:13px; }
-  td.team-cell { min-width:175px; }
-}
+*{box-sizing:border-box}
+body{margin:0;background:#f3f4f8;color:#172139;font-family:Arial,sans-serif;text-align:center}
+header{background:linear-gradient(120deg,#071b33,#24204e);color:white;padding:25px 10px;border-bottom:5px solid #00c2a8}
+h1{font-size:clamp(23px,5vw,36px)}
+main{max-width:950px;margin:auto;padding:14px}
+.panel{background:white;border-radius:14px;padding:18px 10px;margin:16px 0;box-shadow:0 3px 14px #152b4520}
+button{background:#0b2345;color:white;border:0;border-radius:8px;padding:11px;cursor:pointer;font-weight:bold}
+button.danger{background:#c83249}
+select,input{padding:9px;border:1px solid #ccd3df;border-radius:7px;background:white}
+.match{display:flex;align-items:center;justify-content:center;gap:7px;flex-wrap:wrap;background:#f8faff;border:1px solid #e4e8f0;border-radius:10px;margin:10px 0;padding:12px 5px}
+.match select{width:160px}
+.match input{width:53px;text-align:center;font-weight:bold}
+.controls{display:flex;gap:10px;justify-content:center;align-items:center;flex-wrap:wrap}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{background:#0b2345;color:white;padding:10px 5px}
+td{padding:9px 5px;border-bottom:1px solid #e7ebf0}
+td:nth-child(2){text-align:left;white-space:nowrap;font-weight:bold}
+tbody tr:first-child{background:#d9f7f3}
+tbody tr:nth-child(n+2):nth-child(-n+4){background:#eaf6ff}
+.note{color:#66758b;font-size:13px}
+@media(max-width:600px){.match select{width:120px}.match input{width:43px}table{font-size:11px}}
 </style>
 </head>
 <body>
-<h1>
-  <img class="league-logo" id="leagueLogo" alt="Mega Länder League">
-  <span>Mega Länder League Manager 2026/27</span>
-</h1>
-<p class="subtitle">Alle 28 Länder vom Foto · Spiele selbst hinzufügen · automatische Tabelle</p>
+<header>
+<div style="font-size:48px">🏆</div>
+<h1>MEGA LÄNDER LEAGUE</h1>
+<p>Manager 2026/27</p>
+<p>31 Nationalmannschaften · Eigene Spiele · Automatische Tabelle</p>
+</header>
+<main>
+<section class="panel">
+<h2>⚽ Spieltag</h2>
 <div class="controls">
-  <label for="matchday">Spieltag:</label>
-  <select id="matchday" onchange="changeMatchday()"></select>
+<select id="day"></select>
+<button id="add">➕ Spiel hinzufügen</button>
 </div>
+<p class="note">Du bestimmst selbst, welche Länder gegeneinander spielen.</p>
 <div id="matches"></div>
-<button class="add-button" onclick="addMatch()">➕ Spiel hinzufügen</button>
+</section>
+<section class="panel">
 <h2>📊 Tabelle</h2>
-<div class="legend">
-  🏆 Deine eigene Liga mit 28 Ländern – alle Begegnungen und Ergebnisse bestimmst du selbst.
-</div>
-<div class="table-wrapper">
+<div class="table-wrap">
 <table>
-<thead><tr>
-  <th>Pl.</th><th>Team</th><th>Sp.</th><th>Pkt.</th><th>Tore</th><th>Diff.</th>
-</tr></thead>
+<thead><tr><th>Pl.</th><th>Land</th><th>Sp.</th><th>S</th><th>U</th><th>N</th><th>Tore</th><th>Diff.</th><th>Pkt.</th></tr></thead>
 <tbody id="table"></tbody>
 </table>
 </div>
+</section>
+<section class="panel">
+<h2>💾 Datensicherung</h2>
+<button id="export">Exportieren</button>
+<input id="import" type="file" accept=".json">
+<button id="reset" class="danger">Alle Spiele löschen</button>
+</section>
+</main>
 <script>
-const STORAGE_KEY = "mega-laender-league-laliga-design-2026-27";
-const CURRENT_DAY_KEY = "mega-laender-current-matchday-2026-27";
-
-/*
-  Flaggen-Strategie Mega Länder League 2026/27:
-  1) Flaggen von FlagCDN
-  2) Eingebettetes SVG-Fallback
-  3) 
-  4) 
-  5) FEST IN DIESER HTML-DATEI eingebettetes, länderspezifisches SVG-Fallback
-
-  Ergebnis: Es erscheint niemals ein kaputtes Bildsymbol. Wenn eine externe
-  Quelle ausfällt oder blockiert wird, bleibt immer ein lokales Team-Badge
-  sichtbar. Für maximale Ausfallsicherheit gibt es keine generische
-  "No Image"-Grafik mehr.
-*/
-const teams = [
-  {name:"Belgien", code:"be", abbr:"BEL", c1:"#0b2345", c2:"#21d4fd"},
-  {name:"Spanien", code:"es", abbr:"SPA", c1:"#0b2345", c2:"#21d4fd"},
-  {name:"Türkei", code:"tr", abbr:"TÜR", c1:"#0b2345", c2:"#21d4fd"},
-  {name:"England", code:"gb-eng", abbr:"ENG", c1:"#0b2345", c2:"#21d4fd"},
-  {name:"Italien", code:"it", abbr:"ITA", c1:"#0b2345", c2:"#21d4fd"},
-  {name:"Deutschland", code:"de", abbr:"DEU", c1:"#0b2345", c2:"#21d4fd"},
-  {name:"Portugal", code:"pt", abbr:"POR", c1:"#0b2345", c2:"#21d4fd"},
-  {name:"Frankreich", code:"fr", abbr:"FRA", c1:"#0b2345", c2:"#21d4fd"},
-  {name:"Norwegen", code:"no", abbr:"NOR", c1:"#0b2345", c2:"#21d4fd"},
-  {name:"Schweden", code:"se", abbr:"SCH", c1:"#0b2345", c2:"#21d4fd"},
-  {name:"Österreich", code:"at", abbr:"ÖST", c1:"#0b2345", c2:"#21d4fd"},
-  {name:"Niederlande", code:"nl", abbr:"NIE", c1:"#0b2345", c2:"#21d4fd"},
-  {name:"Schweiz", code:"ch", abbr:"SCH", c1:"#0b2345", c2:"#21d4fd"},
-  {name:"Kroatien", code:"hr", abbr:"KRO", c1:"#0b2345", c2:"#21d4fd"},
-  {name:"Griechenland", code:"gr", abbr:"GRI", c1:"#0b2345", c2:"#21d4fd"},
-  {name:"Bosnien", code:"ba", abbr:"BOS", c1:"#0b2345", c2:"#21d4fd"},
-  {name:"Ungarn", code:"hu", abbr:"UNG", c1:"#0b2345", c2:"#21d4fd"},
-  {name:"Kosovo", code:"xk", abbr:"KOS", c1:"#0b2345", c2:"#21d4fd"},
-  {name:"Georgien", code:"ge", abbr:"GEO", c1:"#0b2345", c2:"#21d4fd"},
-  {name:"Finnland", code:"fi", abbr:"FIN", c1:"#0b2345", c2:"#21d4fd"},
-  {name:"Irland", code:"ie", abbr:"IRL", c1:"#0b2345", c2:"#21d4fd"},
-  {name:"Estland", code:"ee", abbr:"EST", c1:"#0b2345", c2:"#21d4fd"},
-  {name:"Island", code:"is", abbr:"ISL", c1:"#0b2345", c2:"#21d4fd"},
-  {name:"Bulgarien", code:"bg", abbr:"BUL", c1:"#0b2345", c2:"#21d4fd"},
-  {name:"Ukraine", code:"ua", abbr:"UKR", c1:"#0b2345", c2:"#21d4fd"},
-  {name:"Albanien", code:"al", abbr:"ALB", c1:"#0b2345", c2:"#21d4fd"},
-  {name:"Polen", code:"pl", abbr:"POL", c1:"#0b2345", c2:"#21d4fd"},
-  {name:"Dänemark", code:"dk", abbr:"DÄN", c1:"#0b2345", c2:"#21d4fd"}
+const countries=[
+["Belgien","🇧🇪"],["Spanien","🇪🇸"],["Türkei","🇹🇷"],
+["England","🏴"],["Italien","🇮🇹"],["Deutschland","🇩🇪"],
+["Portugal","🇵🇹"],["Frankreich","🇫🇷"],["Norwegen","🇳🇴"],
+["Schweden","🇸🇪"],["Österreich","🇦🇹"],["Niederlande","🇳🇱"],
+["Schweiz","🇨🇭"],["Kroatien","🇭🇷"],["Griechenland","🇬🇷"],
+["Bosnien","🇧🇦"],["Ungarn","🇭🇺"],["Kosovo","🇽🇰"],
+["Georgien","🇬🇪"],["Finnland","🇫🇮"],["Irland","🇮🇪"],
+["Estland","🇪🇪"],["Island","🇮🇸"],["Bulgarien","🇧🇬"],
+["Ukraine","🇺🇦"],["Albanien","🇦🇱"],["Polen","🇵🇱"],
+["Dänemark","🇩🇰"],["Slowenien","🇸🇮"],
+["Slowakei","🇸🇰"],["Serbien","🇷🇸"]
 ];
-
-function xmlEscape(value) {
-  return String(value).replace(/[&<>\"]/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[ch]));
+const KEY="mega-laender-31-manager";
+let games={};
+try{
+const x=JSON.parse(localStorage.getItem(KEY)||"{}");
+if(x&&typeof x==="object"&&!Array.isArray(x))games=x;
+}catch(e){}
+const day=document.getElementById("day");
+for(let i=1;i<=60;i++){
+let o=document.createElement("option");
+o.value=i;o.textContent="Spieltag "+i;day.appendChild(o);
 }
-
-function svgFallback(team, size=128) {
-  if (!team) team = {abbr:"LL", name:"LaLiga", c1:"#0b2345", c2:"#ff4b44"};
-  const abbr = xmlEscape(String(team.abbr || "LL").slice(0,4).toUpperCase());
-  const name = xmlEscape(team.name || "LaLiga");
-  const c1 = team.c1 || "#0b2345";
-  const c2 = team.c2 || "#ffffff";
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 128 128">
-    <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="${c1}"/><stop offset="1" stop-color="${c2}"/></linearGradient></defs>
-    <path d="M64 5 112 22v38c0 30-18 50-48 63C34 110 16 90 16 60V22Z" fill="url(#g)" stroke="#fff" stroke-width="5"/>
-    <path d="M64 13 104 27v33c0 24-13 41-40 54-27-13-40-30-40-54V27Z" fill="none" stroke="rgba(0,0,0,.25)" stroke-width="3"/>
-    <circle cx="64" cy="57" r="29" fill="rgba(255,255,255,.92)"/>
-    <text x="64" y="65" text-anchor="middle" font-family="Arial,sans-serif" font-size="25" font-weight="800" fill="#1b1b1b">${abbr}</text>
-    <title>${name}</title>
-  </svg>`;
-  return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+function save(){localStorage.setItem(KEY,JSON.stringify(games))}
+function name(i){return countries[i][1]+" "+countries[i][0]}
+function options(selected){
+return countries.map((c,i)=>`<option value="${i}" ${i===selected?"selected":""}>${name(i)}</option>`).join("");
 }
-
-function logoSources(team) {
-  if (team.code === "gb-eng") return [
-    "https://flagcdn.com/w160/gb-eng.png",
-    svgFallback(team)
-  ];
-  return [
-    `https://flagcdn.com/w160/${team.code}.png`,
-    svgFallback(team)
-  ];
+function renderMatches(){
+let list=games[day.value]||[];
+let box=document.getElementById("matches");
+box.innerHTML="";
+if(!list.length)box.innerHTML='<p class="note">Noch keine Spiele eingetragen.</p>';
+list.forEach((g,i)=>{
+let el=document.createElement("div");
+el.className="match";
+el.innerHTML=`<select class="home">${options(g.h)}</select>
+<input class="a" type="number" min="0" max="99" placeholder="–">
+<b>:</b>
+<input class="b" type="number" min="0" max="99" placeholder="–">
+<select class="away">${options(g.v)}</select>
+<button class="danger">✕</button>`;
+el.querySelector(".a").value=g.a??"";
+el.querySelector(".b").value=g.b??"";
+el.querySelectorAll("select,input").forEach(input=>{
+input.onchange=()=>{
+let h=+el.querySelector(".home").value;
+let v=+el.querySelector(".away").value;
+let a=el.querySelector(".a").value;
+let b=el.querySelector(".b").value;
+if(h===v){alert("Bitte zwei verschiedene Länder wählen.");renderMatches();return}
+if([a,b].some(x=>x!==""&&(!/^\d+$/.test(x)||+x>99))){
+alert("Tore müssen zwischen 0 und 99 liegen.");renderMatches();return;
 }
-function leagueLogoSources() {
-  return [svgFallback({abbr:"ML",name:"Mega Länder League",c1:"#0b2345",c2:"#21d4fd"})];
+Object.assign(g,{h,v,a:a===""?null:+a,b:b===""?null:+b});
+save();renderTable();
+};
+});
+el.querySelector("button").onclick=()=>{
+list.splice(i,1);save();render();
+};
+box.appendChild(el);
+});
 }
-
-function setImageWithFallback(img, sources, index=0) {
-  img.onerror = null;
-  img.dataset.logoIndex = String(index);
-  img.dataset.logoSources = JSON.stringify(sources);
-  img.onerror = function() {
-    const all = JSON.parse(this.dataset.logoSources || "[]");
-    const next = Number(this.dataset.logoIndex || "0") + 1;
-    if (next < all.length) {
-      this.dataset.logoIndex = String(next);
-      this.src = all[next];
-    } else {
-      this.onerror = null;
-    }
-  };
-  img.src = sources[index];
+function renderTable(){
+let rows=countries.map((c,i)=>({i,sp:0,s:0,u:0,n:0,tf:0,ta:0,p:0}));
+Object.values(games).forEach(list=>{
+if(!Array.isArray(list))return;
+list.forEach(g=>{
+let x=rows[g.h],y=rows[g.v];
+if(!x||!y||x===y||!Number.isInteger(g.a)||!Number.isInteger(g.b)||g.a<0||g.b<0)return;
+x.sp++;y.sp++;
+x.tf+=g.a;x.ta+=g.b;y.tf+=g.b;y.ta+=g.a;
+if(g.a>g.b){x.s++;y.n++;x.p+=3}
+else if(g.a<g.b){y.s++;x.n++;y.p+=3}
+else{x.u++;y.u++;x.p++;y.p++}
+});
+});
+rows.sort((a,b)=>b.p-a.p||(b.tf-b.ta)-(a.tf-a.ta)||b.tf-a.tf||a.i-b.i);
+document.getElementById("table").innerHTML=rows.map((r,i)=>{
+let d=r.tf-r.ta;
+return `<tr><td>${i+1}</td><td>${name(r.i)}</td><td>${r.sp}</td><td>${r.s}</td><td>${r.u}</td><td>${r.n}</td><td>${r.tf}:${r.ta}</td><td>${d>0?"+":""}${d}</td><td><b>${r.p}</b></td></tr>`;
+}).join("");
 }
-
-function getTeam(name) { return teams.find(t => t.name === name); }
-function applyTeamLogo(img, name) {
-  const team = getTeam(name);
-  const sources = team ? logoSources(team) : [svgFallback(null)];
-  img.alt = name || "Team";
-  setImageWithFallback(img, sources);
+function render(){renderMatches();renderTable()}
+day.onchange=renderMatches;
+document.getElementById("add").onclick=()=>{
+let d=day.value;
+if(!games[d])games[d]=[];
+games[d].push({h:0,v:1,a:null,b:null});
+save();render();
+};
+document.getElementById("reset").onclick=()=>{
+if(confirm("Wirklich alle Spiele und Ergebnisse löschen?")){
+games={};save();render();
 }
-
-function teamOptions(selected) {
-  return teams.map(t => `<option value="${t.name}" ${t.name === selected ? "selected" : ""}>${t.name}</option>`).join("");
-}
-function loadData() {
-  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}"); }
-  catch { return {}; }
-}
-function saveData(data) { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
-function currentDay() { return document.getElementById("matchday").value; }
-function renderMatchdays() {
-  const select = document.getElementById("matchday");
-  let html = "";
-  for (let i=1;i<=54;i++) html += `<option value="${i}">Spieltag ${i}</option>`;
-  select.innerHTML = html;
-  const savedDay = localStorage.getItem(CURRENT_DAY_KEY);
-  if (savedDay && Number(savedDay)>=1 && Number(savedDay)<=54) select.value = savedDay;
-}
-function changeMatchday() {
-  localStorage.setItem(CURRENT_DAY_KEY,currentDay());
-  renderMatches(); renderTable();
-}
-function renderMatches() {
-  const data=loadData(); const day=currentDay(); const matches=data[day] || [];
-  if (!matches.length) {
-    document.getElementById("matches").innerHTML=`<div class="empty">Noch keine Spiele für Spieltag ${day} eingetragen.</div>`;
-    return;
-  }
-  let html="";
-  matches.forEach((m,i)=>{
-    html += `<div class="match">
-      <img id="logo1-${i}" alt="${m.team1}">
-      <select id="team1-${i}">${teamOptions(m.team1)}</select>
-      <input type="number" min="0" max="99" id="t1-${i}" value="${m.t1 ?? ""}" aria-label="Tore Heimteam">
-      <span class="score-separator">:</span>
-      <input type="number" min="0" max="99" id="t2-${i}" value="${m.t2 ?? ""}" aria-label="Tore Auswärtsteam">
-      <select id="team2-${i}">${teamOptions(m.team2)}</select>
-      <img id="logo2-${i}" alt="${m.team2}">
-      <button onclick="save(${i})">💾 Speichern</button>
-      <button class="delete" onclick="removeMatch(${i})">❌</button>
-    </div>`;
-  });
-  document.getElementById("matches").innerHTML=html;
-  matches.forEach((m,i)=>{
-    applyTeamLogo(document.getElementById(`logo1-${i}`),m.team1);
-    applyTeamLogo(document.getElementById(`logo2-${i}`),m.team2);
-  });
-  document.querySelectorAll(".match select, .match input").forEach(element=>{
-    element.addEventListener("change",saveAuto);
-    element.addEventListener("input",()=>{ if(element.tagName==="INPUT") saveAuto(); });
-  });
-}
-function saveAuto() {
-  const data=loadData(); const day=currentDay(); const matches=data[day] || [];
-  document.querySelectorAll(".match").forEach((el,i)=>{
-    if(!matches[i]) return;
-    matches[i].team1=document.getElementById(`team1-${i}`).value;
-    matches[i].team2=document.getElementById(`team2-${i}`).value;
-    matches[i].t1=document.getElementById(`t1-${i}`).value;
-    matches[i].t2=document.getElementById(`t2-${i}`).value;
-  });
-  data[day]=matches; saveData(data); refreshMatchLogos(); renderTable();
-}
-function refreshMatchLogos() {
-  document.querySelectorAll(".match").forEach((match,i)=>{
-    const team1=document.getElementById(`team1-${i}`)?.value;
-    const team2=document.getElementById(`team2-${i}`)?.value;
-    if(team1) applyTeamLogo(document.getElementById(`logo1-${i}`),team1);
-    if(team2) applyTeamLogo(document.getElementById(`logo2-${i}`),team2);
-  });
-}
-function addMatch() {
-  const data=loadData(); const day=currentDay(); if(!data[day]) data[day]=[];
-  const usedTeams=new Set(); data[day].forEach(m=>{usedTeams.add(m.team1);usedTeams.add(m.team2);});
-  const freeTeams=teams.filter(t=>!usedTeams.has(t.name));
-  data[day].push({team1:freeTeams[0]?.name || teams[0].name, team2:freeTeams[1]?.name || teams[1].name, t1:"", t2:""});
-  saveData(data); renderMatches();
-}
-function removeMatch(i) {
-  const data=loadData(); const day=currentDay(); if(!data[day]) return;
-  data[day].splice(i,1); saveData(data); renderMatches(); renderTable();
-}
-function save(){ saveAuto(); }
-function renderTable() {
-  const data=loadData(); const table={};
-  teams.forEach(t=>table[t.name]={played:0,points:0,goalsFor:0,goalsAgainst:0});
-  Object.values(data).forEach(day=>{
-    if(!Array.isArray(day)) return;
-    day.forEach(m=>{
-      if(m.t1==="" || m.t2==="" || !table[m.team1] || !table[m.team2] || m.team1===m.team2) return;
-      const t1=Number.parseInt(m.t1,10), t2=Number.parseInt(m.t2,10);
-      if(Number.isNaN(t1)||Number.isNaN(t2)||t1<0||t2<0) return;
-      table[m.team1].played++; table[m.team2].played++;
-      table[m.team1].goalsFor+=t1; table[m.team1].goalsAgainst+=t2;
-      table[m.team2].goalsFor+=t2; table[m.team2].goalsAgainst+=t1;
-      if(t1>t2) table[m.team1].points+=3;
-      else if(t2>t1) table[m.team2].points+=3;
-      else { table[m.team1].points++; table[m.team2].points++; }
-    });
-  });
-  const sorted=Object.entries(table).sort((a,b)=>{
-    const diffA=a[1].goalsFor-a[1].goalsAgainst, diffB=b[1].goalsFor-b[1].goalsAgainst;
-    return b[1].points-a[1].points || diffB-diffA || b[1].goalsFor-a[1].goalsFor || a[0].localeCompare(b[0],"de");
-  });
-  let html="";
-  sorted.forEach(([team,val],index)=>{
-    const diff=val.goalsFor-val.goalsAgainst; const diffText=diff>0?`+${diff}`:`${diff}`;
-    html += `<tr>
-      <td>${index+1}</td>
-      <td class="team-cell"><img id="table-logo-${index}" alt="${team}">${team}</td>
-      <td>${val.played}</td><td><strong>${val.points}</strong></td>
-      <td>${val.goalsFor}:${val.goalsAgainst}</td><td>${diffText}</td>
-    </tr>`;
-  });
-  document.getElementById("table").innerHTML=html;
-  sorted.forEach(([team],index)=>applyTeamLogo(document.getElementById(`table-logo-${index}`),team));
-}
-
-setImageWithFallback(document.getElementById("leagueLogo"),leagueLogoSources());
-renderMatchdays(); renderMatches(); renderTable();
+};
+document.getElementById("export").onclick=()=>{
+let blob=new Blob([JSON.stringify(games,null,2)],{type:"application/json"});
+let url=URL.createObjectURL(blob);
+let a=document.createElement("a");
+a.href=url;a.download="mega-laender-league-backup.json";a.click();
+setTimeout(()=>URL.revokeObjectURL(url),1000);
+};
+document.getElementById("import").onchange=async e=>{
+let file=e.target.files[0];if(!file)return;
+try{
+let data=JSON.parse(await file.text());
+if(!data||typeof data!=="object"||Array.isArray(data))throw Error();
+if(!confirm("Gespeicherte Spiele durch Import ersetzen?"))return;
+games=data;save();render();
+}catch(e){alert("Ungültige Sicherungsdatei.");}
+e.target.value="";
+};
+render();
 </script>
 </body>
 </html>
