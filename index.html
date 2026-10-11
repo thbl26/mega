@@ -9,30 +9,45 @@
 *{box-sizing:border-box}
 body{margin:0;background:#f3f4f8;color:#172139;font-family:Arial,sans-serif;text-align:center}
 header{background:linear-gradient(120deg,#071b33,#24204e);color:white;padding:25px 10px;border-bottom:5px solid #00c2a8}
-h1{font-size:clamp(23px,5vw,36px)}
-main{max-width:950px;margin:auto;padding:14px}
+h1{font-size:clamp(23px,5vw,36px);margin:10px}
+header p{color:#d6e8f5}
+main{max-width:1000px;margin:auto;padding:14px}
 .panel{background:white;border-radius:14px;padding:18px 10px;margin:16px 0;box-shadow:0 3px 14px #152b4520}
 button{background:#0b2345;color:white;border:0;border-radius:8px;padding:11px;cursor:pointer;font-weight:bold}
+button:hover{background:#234c7e}
 button.danger{background:#c83249}
-select,input{padding:9px;border:1px solid #ccd3df;border-radius:7px;background:white}
-.match{display:flex;align-items:center;justify-content:center;gap:7px;flex-wrap:wrap;background:#f8faff;border:1px solid #e4e8f0;border-radius:10px;margin:10px 0;padding:12px 5px}
-.match select{width:160px}
-.match input{width:53px;text-align:center;font-weight:bold}
+select,input{padding:9px;border:1px solid #ccd3df;border-radius:7px;background:white;color:#172139}
 .controls{display:flex;gap:10px;justify-content:center;align-items:center;flex-wrap:wrap}
+.match{display:flex;align-items:center;justify-content:center;gap:9px;flex-wrap:wrap;background:#f8faff;border:1px solid #e4e8f0;border-radius:12px;margin:12px 0;padding:16px 8px}
+.team-picker{display:flex;align-items:center;gap:8px}
+.team-picker select{width:165px;font-size:15px;min-height:48px}
+.flag{font-size:46px;line-height:1;min-width:52px;display:inline-flex;align-items:center;justify-content:center}
+.match input{width:57px;text-align:center;font-size:19px;font-weight:bold}
 .table-wrap{overflow-x:auto}
-table{width:100%;border-collapse:collapse;font-size:13px}
-th{background:#0b2345;color:white;padding:10px 5px}
-td{padding:9px 5px;border-bottom:1px solid #e7ebf0}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{background:#0b2345;color:white;padding:11px 6px}
+td{padding:10px 6px;border-bottom:1px solid #e7ebf0}
 td:nth-child(2){text-align:left;white-space:nowrap;font-weight:bold}
+.table-team{display:flex;align-items:center;gap:10px}
+.table-flag{font-size:32px;line-height:1}
 tbody tr:first-child{background:#d9f7f3}
 tbody tr:nth-child(n+2):nth-child(-n+4){background:#eaf6ff}
 .note{color:#66758b;font-size:13px}
-@media(max-width:600px){.match select{width:120px}.match input{width:43px}table{font-size:11px}}
+@media(max-width:650px){
+.match{gap:6px;padding:12px 4px}
+.team-picker{gap:3px}
+.team-picker select{width:115px;font-size:12px}
+.flag{font-size:38px;min-width:40px}
+.match input{width:43px;font-size:16px}
+table{font-size:11px}
+td,th{padding:8px 4px}
+.table-flag{font-size:27px}
+}
 </style>
 </head>
 <body>
 <header>
-<div style="font-size:48px">🏆</div>
+<div style="font-size:52px">🏆</div>
 <h1>MEGA LÄNDER LEAGUE</h1>
 <p>Manager 2026/27</p>
 <p>31 Nationalmannschaften · Eigene Spiele · Automatische Tabelle</p>
@@ -41,7 +56,7 @@ tbody tr:nth-child(n+2):nth-child(-n+4){background:#eaf6ff}
 <section class="panel">
 <h2>⚽ Spieltag</h2>
 <div class="controls">
-<select id="day"></select>
+<select id="day" aria-label="Spieltag"></select>
 <button id="add">➕ Spiel hinzufügen</button>
 </div>
 <p class="note">Du bestimmst selbst, welche Länder gegeneinander spielen.</p>
@@ -51,134 +66,337 @@ tbody tr:nth-child(n+2):nth-child(-n+4){background:#eaf6ff}
 <h2>📊 Tabelle</h2>
 <div class="table-wrap">
 <table>
-<thead><tr><th>Pl.</th><th>Land</th><th>Sp.</th><th>S</th><th>U</th><th>N</th><th>Tore</th><th>Diff.</th><th>Pkt.</th></tr></thead>
+<thead>
+<tr>
+<th>Pl.</th><th>Land</th><th>Sp.</th><th>S</th><th>U</th><th>N</th><th>Tore</th><th>Diff.</th><th>Pkt.</th>
+</tr>
+</thead>
 <tbody id="table"></tbody>
 </table>
 </div>
 </section>
 <section class="panel">
 <h2>💾 Datensicherung</h2>
+<div class="controls">
 <button id="export">Exportieren</button>
-<input id="import" type="file" accept=".json">
+<label>Importieren <input id="import" type="file" accept=".json,application/json"></label>
 <button id="reset" class="danger">Alle Spiele löschen</button>
+</div>
 </section>
 </main>
+<footer style="padding:25px;color:#66758b">
+Mega Länder League 2026/27 · Offline nutzbar
+</footer>
 <script>
+"use strict";
+
 const countries=[
-["Belgien","🇧🇪"],["Spanien","🇪🇸"],["Türkei","🇹🇷"],
-["England","🏴"],["Italien","🇮🇹"],["Deutschland","🇩🇪"],
-["Portugal","🇵🇹"],["Frankreich","🇫🇷"],["Norwegen","🇳🇴"],
-["Schweden","🇸🇪"],["Österreich","🇦🇹"],["Niederlande","🇳🇱"],
-["Schweiz","🇨🇭"],["Kroatien","🇭🇷"],["Griechenland","🇬🇷"],
-["Bosnien","🇧🇦"],["Ungarn","🇭🇺"],["Kosovo","🇽🇰"],
-["Georgien","🇬🇪"],["Finnland","🇫🇮"],["Irland","🇮🇪"],
-["Estland","🇪🇪"],["Island","🇮🇸"],["Bulgarien","🇧🇬"],
-["Ukraine","🇺🇦"],["Albanien","🇦🇱"],["Polen","🇵🇱"],
-["Dänemark","🇩🇰"],["Slowenien","🇸🇮"],
-["Slowakei","🇸🇰"],["Serbien","🇷🇸"]
+["Belgien","🇧🇪"],
+["Spanien","🇪🇸"],
+["Türkei","🇹🇷"],
+["England","🏴"],
+["Italien","🇮🇹"],
+["Deutschland","🇩🇪"],
+["Portugal","🇵🇹"],
+["Frankreich","🇫🇷"],
+["Norwegen","🇳🇴"],
+["Schweden","🇸🇪"],
+["Österreich","🇦🇹"],
+["Niederlande","🇳🇱"],
+["Schweiz","🇨🇭"],
+["Kroatien","🇭🇷"],
+["Griechenland","🇬🇷"],
+["Bosnien","🇧🇦"],
+["Ungarn","🇭🇺"],
+["Kosovo","🇽🇰"],
+["Georgien","🇬🇪"],
+["Finnland","🇫🇮"],
+["Irland","🇮🇪"],
+["Estland","🇪🇪"],
+["Island","🇮🇸"],
+["Bulgarien","🇧🇬"],
+["Ukraine","🇺🇦"],
+["Albanien","🇦🇱"],
+["Polen","🇵🇱"],
+["Dänemark","🇩🇰"],
+["Slowenien","🇸🇮"],
+["Slowakei","🇸🇰"],
+["Serbien","🇷🇸"]
 ];
+
 const KEY="mega-laender-31-manager";
+const DAYKEY="mega-laender-31-current-day";
+
 let games={};
+
 try{
-const x=JSON.parse(localStorage.getItem(KEY)||"{}");
-if(x&&typeof x==="object"&&!Array.isArray(x))games=x;
+ const x=JSON.parse(localStorage.getItem(KEY)||"{}");
+ if(x&&typeof x==="object"&&!Array.isArray(x)){
+  games=x;
+ }
 }catch(e){}
+
 const day=document.getElementById("day");
+
 for(let i=1;i<=60;i++){
-let o=document.createElement("option");
-o.value=i;o.textContent="Spieltag "+i;day.appendChild(o);
+ const o=document.createElement("option");
+ o.value=i;
+ o.textContent="Spieltag "+i;
+ day.appendChild(o);
 }
-function save(){localStorage.setItem(KEY,JSON.stringify(games))}
-function name(i){return countries[i][1]+" "+countries[i][0]}
+
+const savedDay=localStorage.getItem(DAYKEY);
+if(savedDay&&Number(savedDay)>=1&&Number(savedDay)<=60){
+ day.value=savedDay;
+}
+
+function saveData(){
+ localStorage.setItem(KEY,JSON.stringify(games));
+}
+
+function flag(i){
+ return countries[i]?.[1]||"🏳️";
+}
+
+function name(i){
+ return countries[i]?.[0]||"Unbekannt";
+}
+
 function options(selected){
-return countries.map((c,i)=>`<option value="${i}" ${i===selected?"selected":""}>${name(i)}</option>`).join("");
+ return countries.map((c,i)=>
+  `<option value="${i}" ${i===selected?"selected":""}>${c[1]} ${c[0]}</option>`
+ ).join("");
 }
+
+function validScore(x){
+ return Number.isInteger(x)&&x>=0&&x<=99;
+}
+
 function renderMatches(){
-let list=games[day.value]||[];
-let box=document.getElementById("matches");
-box.innerHTML="";
-if(!list.length)box.innerHTML='<p class="note">Noch keine Spiele eingetragen.</p>';
-list.forEach((g,i)=>{
-let el=document.createElement("div");
-el.className="match";
-el.innerHTML=`<select class="home">${options(g.h)}</select>
-<input class="a" type="number" min="0" max="99" placeholder="–">
-<b>:</b>
-<input class="b" type="number" min="0" max="99" placeholder="–">
-<select class="away">${options(g.v)}</select>
-<button class="danger">✕</button>`;
-el.querySelector(".a").value=g.a??"";
-el.querySelector(".b").value=g.b??"";
-el.querySelectorAll("select,input").forEach(input=>{
-input.onchange=()=>{
-let h=+el.querySelector(".home").value;
-let v=+el.querySelector(".away").value;
-let a=el.querySelector(".a").value;
-let b=el.querySelector(".b").value;
-if(h===v){alert("Bitte zwei verschiedene Länder wählen.");renderMatches();return}
-if([a,b].some(x=>x!==""&&(!/^\d+$/.test(x)||+x>99))){
-alert("Tore müssen zwischen 0 und 99 liegen.");renderMatches();return;
+ const list=Array.isArray(games[day.value])?games[day.value]:[];
+ const box=document.getElementById("matches");
+ box.innerHTML="";
+
+ if(!list.length){
+  box.innerHTML='<p class="note">Noch keine Spiele eingetragen.</p>';
+ }
+
+ list.forEach((g,i)=>{
+  const el=document.createElement("div");
+  el.className="match";
+
+  el.innerHTML=`
+   <div class="team-picker">
+    <span class="flag home-flag"></span>
+    <select class="home" aria-label="Heimteam">${options(g.h)}</select>
+   </div>
+   <input class="a" type="number" min="0" max="99" placeholder="–" aria-label="Heimtore">
+   <b>:</b>
+   <input class="b" type="number" min="0" max="99" placeholder="–" aria-label="Gästetore">
+   <div class="team-picker">
+    <select class="away" aria-label="Gastteam">${options(g.v)}</select>
+    <span class="flag away-flag"></span>
+   </div>
+   <button class="danger" title="Spiel löschen">✕</button>
+  `;
+
+  const home=el.querySelector(".home");
+  const away=el.querySelector(".away");
+  const a=el.querySelector(".a");
+  const b=el.querySelector(".b");
+
+  a.value=g.a??"";
+  b.value=g.b??"";
+
+  function refreshFlags(){
+   el.querySelector(".home-flag").textContent=flag(+home.value);
+   el.querySelector(".away-flag").textContent=flag(+away.value);
+  }
+
+  refreshFlags();
+
+  el.querySelectorAll("select,input").forEach(input=>{
+   input.onchange=()=>{
+    const h=+home.value;
+    const v=+away.value;
+    const av=a.value.trim();
+    const bv=b.value.trim();
+
+    if(h===v){
+     alert("Bitte zwei verschiedene Länder wählen.");
+     renderMatches();
+     return;
+    }
+
+    if([av,bv].some(x=>x!==""&&(!/^\d+$/.test(x)||+x>99))){
+     alert("Tore müssen zwischen 0 und 99 liegen.");
+     renderMatches();
+     return;
+    }
+
+    Object.assign(g,{
+     h,v,
+     a:av===""?null:+av,
+     b:bv===""?null:+bv
+    });
+
+    saveData();
+    refreshFlags();
+    renderTable();
+   };
+  });
+
+  el.querySelector("button").onclick=()=>{
+   list.splice(i,1);
+   saveData();
+   render();
+  };
+
+  box.appendChild(el);
+ });
 }
-Object.assign(g,{h,v,a:a===""?null:+a,b:b===""?null:+b});
-save();renderTable();
-};
-});
-el.querySelector("button").onclick=()=>{
-list.splice(i,1);save();render();
-};
-box.appendChild(el);
-});
-}
+
 function renderTable(){
-let rows=countries.map((c,i)=>({i,sp:0,s:0,u:0,n:0,tf:0,ta:0,p:0}));
-Object.values(games).forEach(list=>{
-if(!Array.isArray(list))return;
-list.forEach(g=>{
-let x=rows[g.h],y=rows[g.v];
-if(!x||!y||x===y||!Number.isInteger(g.a)||!Number.isInteger(g.b)||g.a<0||g.b<0)return;
-x.sp++;y.sp++;
-x.tf+=g.a;x.ta+=g.b;y.tf+=g.b;y.ta+=g.a;
-if(g.a>g.b){x.s++;y.n++;x.p+=3}
-else if(g.a<g.b){y.s++;x.n++;y.p+=3}
-else{x.u++;y.u++;x.p++;y.p++}
-});
-});
-rows.sort((a,b)=>b.p-a.p||(b.tf-b.ta)-(a.tf-a.ta)||b.tf-a.tf||a.i-b.i);
-document.getElementById("table").innerHTML=rows.map((r,i)=>{
-let d=r.tf-r.ta;
-return `<tr><td>${i+1}</td><td>${name(r.i)}</td><td>${r.sp}</td><td>${r.s}</td><td>${r.u}</td><td>${r.n}</td><td>${r.tf}:${r.ta}</td><td>${d>0?"+":""}${d}</td><td><b>${r.p}</b></td></tr>`;
-}).join("");
+ const rows=countries.map((c,i)=>({
+  i,sp:0,s:0,u:0,n:0,tf:0,ta:0,p:0
+ }));
+
+ Object.values(games).forEach(list=>{
+  if(!Array.isArray(list))return;
+
+  list.forEach(g=>{
+   const x=rows[g.h];
+   const y=rows[g.v];
+
+   if(!x||!y||x===y||
+      !validScore(g.a)||!validScore(g.b))return;
+
+   x.sp++;
+   y.sp++;
+
+   x.tf+=g.a;
+   x.ta+=g.b;
+   y.tf+=g.b;
+   y.ta+=g.a;
+
+   if(g.a>g.b){
+    x.s++;
+    y.n++;
+    x.p+=3;
+   }else if(g.a<g.b){
+    y.s++;
+    x.n++;
+    y.p+=3;
+   }else{
+    x.u++;
+    y.u++;
+    x.p++;
+    y.p++;
+   }
+  });
+ });
+
+ rows.sort((a,b)=>
+  b.p-a.p||
+  (b.tf-b.ta)-(a.tf-a.ta)||
+  b.tf-a.tf||
+  name(a.i).localeCompare(name(b.i),"de")
+ );
+
+ document.getElementById("table").innerHTML=rows.map((r,i)=>{
+  const diff=r.tf-r.ta;
+
+  return `<tr>
+   <td>${i+1}</td>
+   <td><div class="table-team"><span class="table-flag">${flag(r.i)}</span><span>${name(r.i)}</span></div></td>
+   <td>${r.sp}</td>
+   <td>${r.s}</td>
+   <td>${r.u}</td>
+   <td>${r.n}</td>
+   <td>${r.tf}:${r.ta}</td>
+   <td>${diff>0?"+":""}${diff}</td>
+   <td><b>${r.p}</b></td>
+  </tr>`;
+ }).join("");
 }
-function render(){renderMatches();renderTable()}
-day.onchange=renderMatches;
+
+function render(){
+ renderMatches();
+ renderTable();
+}
+
+day.onchange=()=>{
+ localStorage.setItem(DAYKEY,day.value);
+ renderMatches();
+};
+
 document.getElementById("add").onclick=()=>{
-let d=day.value;
-if(!games[d])games[d]=[];
-games[d].push({h:0,v:1,a:null,b:null});
-save();render();
+ const d=day.value;
+ if(!Array.isArray(games[d]))games[d]=[];
+
+ const used=new Set();
+ games[d].forEach(g=>{
+  used.add(g.h);
+  used.add(g.v);
+ });
+
+ const free=countries.map((_,i)=>i).filter(i=>!used.has(i));
+
+ games[d].push({
+  h:free[0]??0,
+  v:free[1]??1,
+  a:null,
+  b:null
+ });
+
+ saveData();
+ render();
 };
+
 document.getElementById("reset").onclick=()=>{
-if(confirm("Wirklich alle Spiele und Ergebnisse löschen?")){
-games={};save();render();
-}
+ if(confirm("Wirklich alle Spiele und Ergebnisse löschen?")){
+  games={};
+  saveData();
+  render();
+ }
 };
+
 document.getElementById("export").onclick=()=>{
-let blob=new Blob([JSON.stringify(games,null,2)],{type:"application/json"});
-let url=URL.createObjectURL(blob);
-let a=document.createElement("a");
-a.href=url;a.download="mega-laender-league-backup.json";a.click();
-setTimeout(()=>URL.revokeObjectURL(url),1000);
+ const blob=new Blob(
+  [JSON.stringify(games,null,2)],
+  {type:"application/json"}
+ );
+ const url=URL.createObjectURL(blob);
+ const a=document.createElement("a");
+ a.href=url;
+ a.download="mega-laender-league-backup.json";
+ a.click();
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
 };
+
 document.getElementById("import").onchange=async e=>{
-let file=e.target.files[0];if(!file)return;
-try{
-let data=JSON.parse(await file.text());
-if(!data||typeof data!=="object"||Array.isArray(data))throw Error();
-if(!confirm("Gespeicherte Spiele durch Import ersetzen?"))return;
-games=data;save();render();
-}catch(e){alert("Ungültige Sicherungsdatei.");}
-e.target.value="";
+ const file=e.target.files[0];
+ if(!file)return;
+
+ try{
+  const data=JSON.parse(await file.text());
+  if(!data||typeof data!=="object"||Array.isArray(data)){
+   throw Error("Ungültige Datei");
+  }
+
+  if(confirm("Gespeicherte Spiele durch Import ersetzen?")){
+   games=data;
+   saveData();
+   render();
+   alert("Import erfolgreich!");
+  }
+ }catch(err){
+  alert("Ungültige Sicherungsdatei.");
+ }
+
+ e.target.value="";
 };
+
 render();
 </script>
 </body>
